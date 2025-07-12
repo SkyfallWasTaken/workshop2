@@ -53,5 +53,18 @@ app.command("/memegen", async ({ command, ack, respond, say }) => {
   }
 });
 
+app.command("/memehistory", async ({ command, ack, respond }) => {
+  await ack();
+
+  const memeUrls = (await db.get(command.user_id)) || [];
+  if (memeUrls.length === 0) {
+    await respond("No memes in history - generate one!");
+    return;
+  }
+
+  const urls = memeUrls.join(", ");
+  await respond(urls);
+});
+
 await app.start();
 console.log("We're up and running :)");
