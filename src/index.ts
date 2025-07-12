@@ -44,6 +44,13 @@ app.command("/memegen", async ({ command, ack, respond, say }) => {
       },
     ],
   });
+
+  const oldData = await db.get(command.user_id);
+  if (oldData) {
+    await db.set(command.user_id, [...oldData, json.data.url]);
+  } else {
+    await db.set(command.user_id, [json.data.url]);
+  }
 });
 
 await app.start();
